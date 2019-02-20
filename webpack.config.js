@@ -1,4 +1,5 @@
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const ENV = process.env.NODE_ENV || 'development';
@@ -22,7 +23,47 @@ module.exports = {
       {
         test: /\.(tsx?)|(js)/,
         exclude: /node_modules/,
-        use: [{ loader: 'babel-loader' }, { loader: 'astroturf/loader' }],
+        use: [
+          { loader: 'babel-loader' },
+          {
+            loader: 'linaria/loader',
+            options: {
+              sourceMap: !isProduction,
+            },
+          },
+        ],
+      },
+      {
+        /**
+         * linaria/loader extracts *styled css* part from ts/js files
+         * into separate `.css` files, then this rule describes
+         * how to handle these `.css` files.
+         */
+        test: /\.css$/,
+        exclude: /node_modules/,
+        use: [
+          {
+            loader: isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+          },
+          {
+            loader: 'css-loader',
+            options: {
+              modules: false, // linaria/loader already creates scoped rules
+              sourceMap: !isProduction,
+            },
+          },
+        ],
+      },
+      {
+        /** Handle css imports from libs (from node_modules) */
+        test: /\.css$/,
+        include: /node_modules/,
+        use: [
+          {
+            loader: isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+          },
+          { loader: 'css-loader' },
+        ],
       },
     ],
   },
