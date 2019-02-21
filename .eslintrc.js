@@ -10,7 +10,7 @@ module.exports = {
     'import/prefer-default-export': 0,
     'import/no-extraneous-dependencies': [
       'error',
-      { devDependencies: ['scripts/*.js', 'webpack.config.js'] },
+      { devDependencies: ['scripts/*.js', 'webpack.config.js', 'doczrc.js'] },
     ],
   },
 };
