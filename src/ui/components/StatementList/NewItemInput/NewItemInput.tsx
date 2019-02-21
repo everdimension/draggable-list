@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { styled } from 'linaria/react';
 
-const { useState } = React;
+const { useState, useRef, useEffect } = React;
 
 const AddButton = styled.button`
   width: 100%;
@@ -17,13 +17,41 @@ const AddInput = styled.input`
   padding: 20px;
 `;
 
-const NewItemInput: React.SFC<{}> = () => {
+interface Props {
+  onSubmit: (value: string) => void;
+}
+
+const identity = (x: any) => x;
+
+const NewItemInput: React.SFC<Props> = ({ onSubmit = identity }) => {
+  const inputRef = useRef(null);
   const [isEditing, setIsEditing] = useState(false);
+
+  useEffect(() => {
+    if (isEditing) {
+      inputRef.current.focus();
+    }
+  }, [isEditing]);
+
   return (
     <div>
       {isEditing ? (
-        <form onSubmit={() => setIsEditing(false)}>
-          <AddInput type="text" required />
+        <form
+          onSubmit={event => {
+            setIsEditing(false);
+            const statement = event.currentTarget.elements.namedItem(
+              'statement',
+            ) as HTMLInputElement;
+            onSubmit(statement.value);
+          }}
+        >
+          <AddInput
+            ref={inputRef}
+            name="statement"
+            placeholder="type something"
+            type="text"
+            required
+          />
         </form>
       ) : (
         <AddButton onClick={() => setIsEditing(true)}>

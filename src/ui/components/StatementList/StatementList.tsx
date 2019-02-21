@@ -46,9 +46,10 @@ const DragHandleButton = styled.div`
 `;
 
 export const StatementList: React.SFC<{}> = () => {
-  const [items] = useState(initialItemsState.items);
+  const [items, setItems] = useState(initialItemsState.items);
   const [itemsOrder, setItemsOrder] = useState(initialItemsState.itemsOrder);
 
+  console.log(items);
   return (
     <ListContainer>
       <DragDropContext
@@ -103,7 +104,17 @@ export const StatementList: React.SFC<{}> = () => {
         </Droppable>
       </DragDropContext>
       <div style={{ paddingRight: listItemPaddingRight }}>
-        <NewItemInput />
+        <NewItemInput
+          onSubmit={value => {
+            const newItemId = String(itemsOrder.length + 1);
+            const newItem = { id: newItemId, name: value, description: 'rnd' };
+            setItems({
+              ...items,
+              [newItemId]: newItem,
+            });
+            setItemsOrder([...itemsOrder, newItemId]);
+          }}
+        />
       </div>
     </ListContainer>
   );
