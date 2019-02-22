@@ -12,9 +12,12 @@ const AddButton = styled.button`
 `;
 
 const AddInput = styled.input`
+  appearance: none;
   display: block;
   width: 100%;
   padding: 20px;
+  border: 1px solid #bec8d3;
+  border-radius: 0;
 `;
 
 interface Props {
@@ -38,6 +41,7 @@ const NewItemInput: React.SFC<Props> = ({ onSubmit = identity }) => {
       {isEditing ? (
         <form
           onSubmit={event => {
+            event.preventDefault();
             setIsEditing(false);
             const statement = event.currentTarget.elements.namedItem(
               'statement',
