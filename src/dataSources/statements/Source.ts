@@ -20,6 +20,7 @@ interface State {
 
 export class Source {
   state: State;
+
   emitter: NanoEvents<any>;
 
   constructor() {
