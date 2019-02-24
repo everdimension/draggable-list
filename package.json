@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "webpack-dev-server --hot",
+    "build": "cross-env NODE_ENV=production webpack",
     "styleguide": "docz dev",
     "precommit": "lint-staged",
     "lint": "eslint \"{*.js,src/**/*.{js,jsx,tsx,ts}}\" && tsc --pretty",
@@ -42,6 +43,8 @@
     "@types/react-dom": "^16.8.1",
     "@typescript-eslint/parser": "^1.4.1",
     "babel-loader": "^8.0.5",
+    "copy-webpack-plugin": "^5.0.0",
+    "cross-env": "^5.2.0",
     "css-loader": "^2.1.0",
     "docz": "^0.13.7",
     "docz-plugin-css": "^0.11.0",

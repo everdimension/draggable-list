@@ -1,6 +1,7 @@
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 const ENV = process.env.NODE_ENV || 'development';
 // const isDevelopment = ENV === 'development';
@@ -72,6 +73,11 @@ module.exports = {
       filename: 'index.html',
       template: path.resolve(__dirname, 'src/index.html'),
     }),
+    isProduction &&
+      new MiniCssExtractPlugin({
+        filename: `styles${buildNameSuffix}.css`,
+      }),
+    isProduction && new CopyPlugin([{ from: 'public' }]),
   ],
   stats: isProduction ? 'normal' : 'errors-only',
   devServer: {
